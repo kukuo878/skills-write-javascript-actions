@@ -1,13 +1,18 @@
-name: JS Actions
+const request = require("request-promise");
 
-on:
-  issues:
-    types: [labeled]
+const options = {
+  method: "GET",
+  uri: "https://icanhazdadjoke.com/",
+  headers: {
+    Accept: "application/json",
+    "User-Agent": "Writing JavaScript action GitHub Skills course.",
+  },
+  json: true,
+};
 
-jobs:
-  action:
-    if: ${{ !github.event.repository.is_template }}
-    runs-on: ubuntu-latest
+async function getJoke() {
+  const res = await request(options);
+  return res.joke;
+}
 
-    steps:
-      - uses: actions/checkout@v4
+module.exports = getJoke;
